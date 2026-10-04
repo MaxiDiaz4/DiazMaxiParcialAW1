@@ -1,0 +1,138 @@
+/* Parcial 1 - Tema 4 - Díaz Maximiliano
+   Bloque vs. línea y algoritmo de especificidad CSS */
+
+/* Base */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0 20px 20px;
+    color: #222;
+}
+
+header,
+footer {
+    background-color: #1f2937;
+    color: #fff;
+    padding: 10px 20px;
+    margin: 0 -20px 20px;
+}
+
+footer {
+    margin: 20px -20px 0;
+}
+
+.demo {
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+}
+
+/* PARTE 1: flujo normal */
+
+/* Borde punteado para VER el área que ocupa cada bloque:
+   llega de lado a lado del contenedor. */
+.caja {
+    border: 2px dashed #3b82f6;
+    padding: 5px;
+}
+
+/* Fondo amarillo para VER que los elementos de línea
+   solo ocupan el ancho de su contenido. */
+.linea {
+    background-color: #fde68a;
+    /* margin vertical: NO tiene efecto en elementos de línea */
+    margin-top: 30px;
+    /* padding vertical: se dibuja, pero NO empuja las líneas vecinas */
+    padding: 4px;
+}
+
+/* PARTE 2: flujo modificado (DESPUÉS) */
+
+/* Los elementos de línea pasan a ser de bloque:
+   ahora cada uno ocupa toda una fila y el margin vertical sí aplica. */
+.modificado .linea {
+    display: block;
+    margin: 6px 0;
+}
+
+/* Los encabezados (bloque) pasan a inline-block:
+   quedan uno al lado del otro. */
+.titulos h3 {
+    display: inline-block;
+    border: 2px solid #10b981;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+/*PARTE 3: <a> envolviendo bloques */
+.tarjeta {
+    display: block;
+    border: 2px solid #6366f1;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tarjeta:hover {
+    background-color: #eef2ff;
+}
+
+/* PARTE 4: ESPECIFICIDAD (a, b, c)
+a = IDs | b = clases, pseudo-clases, atributos | c = elementos
+Todas estas reglas apuntan al párrafo #objetivo. */
+
+/* Regla 1: p
+   Especificidad (0, 0, 1) -> la más débil.
+   Afecta a TODOS los párrafos (por eso es el color base),
+   pero en #objetivo pierde contra todas las reglas siguientes. */
+p {
+    color: #222;
+}
+
+/* header p / footer p: (0, 0, 2) -> le gana a "p" (c=2 > c=1). */
+header p,
+footer p {
+    color: #fff;
+}
+
+/* Regla 2: .texto
+   Especificidad (0, 1, 0) -> le gana a la regla 1 (b=1 > b=0). */
+.texto {
+    color: orange;
+}
+
+/* Regla 3: .contenedor p
+   Especificidad (0, 1, 1) -> le gana a la regla 2 (c=1 > c=0). */
+.contenedor p {
+    color: brown;
+}
+
+/* Regla 4: .texto.destacado
+   Especificidad (0, 2, 0) -> le gana a la regla 3 (b=2 > b=1). */
+.texto.destacado {
+    color: darkgreen;
+}
+
+/* Regla 5: .contenedor .destacado
+   Especificidad (0, 2, 0) -> EMPATA con la regla 4.
+   Como aparece DESPUÉS en el archivo, gana por cascada (orden). */
+.contenedor .destacado {
+    color: green;
+}
+
+/* Regla 6: #objetivo
+   Especificidad (1, 0, 0) -> GANA en #objetivo.
+   Un solo ID (a=1) supera a cualquier cantidad de clases,
+   porque se compara de izquierda a derecha. */
+#objetivo {
+    color: blue;
+}
+
+/* Estilo en línea (style="color: purple") en el 3.er párrafo:
+   Especificidad (1, 0, 0, 0) -> supera a todas las reglas anteriores.
+
+   BUENA PRÁCTICA: no usar !important. Si hiciera falta,
+   anularía todo este cálculo y obligaría a usar otro
+   !important para corregirlo. Es mejor mantener selectores
+   de baja especificidad (por ejemplo, con BEM). */

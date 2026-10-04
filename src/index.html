@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcial 1 - Tema 4 | Díaz Maximiliano</title>
+    <link rel="stylesheet" href="estilos/index.css">
+</head>
+<body>
+
+    <header>
+        <h1>Tema 4: Bloque vs. línea y especificidad CSS</h1>
+        <p>Aplicaciones Web 1 - Parcial 1 - Díaz Maximiliano</p>
+    </header>
+
+    <main>
+
+        <!-- PARTE 1: FLUJO NORMAL (comportamiento por defecto) -->
+        <section class="demo">
+            <h2>1. Flujo normal (ANTES)</h2>
+
+            <!-- <p> es de BLOQUE: salto de línea y ocupa todo el ancho -->
+            <p class="caja">
+                Este párrafo es un elemento de bloque. Dentro tiene
+                <strong class="linea">strong</strong>,
+                <em class="linea">em</em> y
+                <span class="linea">span</span>, que son de LÍNEA:
+                se ubican contiguos y miden lo que mide su contenido.
+            </p>
+
+            <p class="caja">Segundo párrafo: empieza en una línea nueva.</p>
+
+            <!-- <img> es de línea (reemplazado): queda contiguo al texto -->
+            <p class="caja">
+                Imagen en línea:
+                <img src="./imagenes/imagen1.svg" alt="Ejemplo 1" width="80" height="50">
+                <img src="./imagenes/imagen2.svg" alt="Ejemplo 2" width="80" height="50">
+                quedan una al lado de la otra.
+            </p>
+        </section>
+
+        <!-- PARTE 2: FLUJO MODIFICADO CON CSS (DESPUÉS) -->
+        <section class="demo modificado">
+            <h2>2. Flujo modificado con display (DESPUÉS)</h2>
+
+            <p class="caja">
+                Ahora los mismos elementos:
+                <strong class="linea">strong</strong>
+                <em class="linea">em</em>
+                <span class="linea">span</span>
+                se comportan como bloques.
+            </p>
+
+            <!-- Los <h2> se vuelven de línea: quedan contiguos -->
+            <div class="titulos">
+                <h3>Título A</h3>
+                <h3>Título B</h3>
+            </div>
+        </section>
+
+        <!-- PARTE 3: REGLA DE ANIDACIÓN Y EXCEPCIÓN DE <a>-->
+        <section class="demo">
+            <h2>3. Excepción de anidación: &lt;a&gt; envolviendo bloques</h2>
+
+            <!-- INCORRECTO (no se usa): <span><p>...</p></span>
+                 Un bloque nunca va dentro de un elemento de línea. -->
+
+            <!-- CORRECTO en HTML5: <a> tiene modelo de contenido
+                 "transparente" y puede envolver bloques, siempre que
+                 no contenga otros elementos interactivos -->
+            <a href="#" class="tarjeta">
+                <h3>Tarjeta clickeable</h3>
+                <p>Toda la tarjeta (h3 + p) está dentro de un &lt;a&gt;.</p>
+            </a>
+        </section>
+
+        <!-- PARTE 4: ESPECIFICIDAD Varios selectores apuntan al MISMO párrafo.
+                El cálculo está en estilos.css -->
+        <section class="demo" id="pruebas">
+            <h2>4. Caso de prueba de especificidad</h2>
+
+            <div class="contenedor">
+                <p id="objetivo" class="texto destacado">
+                    ¿De qué color soy? (gana el selector con ID: azul)
+                </p>
+                <p class="texto destacado">
+                    Sin ID: empatan dos reglas (0,2,0); gana la última: verde.
+                </p>
+                <p class="texto" style="color: purple;">
+                    Estilo en línea (1,0,0,0): violeta, le gana a todo menos a !important.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Díaz Maximiliano - Prof. Andrés Senn - Aplicaciones Web 1</p>
+    </footer>
+
+</body>
+</html>
